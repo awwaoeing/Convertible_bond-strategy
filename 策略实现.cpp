@@ -37,7 +37,7 @@ struct position()
     struct selected_bond[10];
 }
 
-//写入第day 天的文件信息 
+//写入第day天的文件信息 
 void write_infod(string day)
 {
     int cnt = 0;
