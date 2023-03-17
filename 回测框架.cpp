@@ -15,7 +15,6 @@ double Capital[N]; //存储每天仓位的价值
 int Capcnt; //capital 的下标索引
 
 //实现将日期转换为时间戳
-
 time_t time_stamp(int year,int month,int day)
 {
     tm t = {};
@@ -27,10 +26,8 @@ time_t time_stamp(int year,int month,int day)
     return ans;
 }
 
-
 //初始化backtest_scope[N],存储格式:backtest_scope[k] = 2022-01-01.csv
 //参数: 回测开始及结束的时间
-
 void backtest_scope_init(int sty,int stm,int std,int edy,int edm,int edd)
 {
     //定义开始,结束时间的时间戳
@@ -51,9 +48,7 @@ void backtest_scope_init(int sty,int stm,int std,int edy,int edm,int edd)
     }
 }
 
-
 //定义可转债结构体,bond[xxx]表索引为xxx 可转债的信息
-
 struct Bond
 {
     string name;
@@ -69,9 +64,7 @@ struct Bond
     }
 };
 
-
 //定义仓位
-
 struct position
 {
     double total_fund;
@@ -80,9 +73,7 @@ struct position
     Bond holding[10];  //持仓的可转债
 };
 
-
 //将资金每日的变化写入curve_data.csv 文件
-
 void write_into(string day,position capital)
 {
     ofstream outfile("curve_data.csv",ios_base::app); // 打开文件,构造输出流对象outfile 并绑定文件
@@ -92,9 +83,7 @@ void write_into(string day,position capital)
     outfile.close();
 }
 
-
 //更新仓位
-
 void update(string day,position capital)
 {
     int cnt = 0; // 记录当天可转债的数量
