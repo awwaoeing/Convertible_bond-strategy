@@ -7,10 +7,12 @@
 
 using namespace std;
 
-const int N = 365 * 5;
+const int N = 365 * 5 + 10;
 
 string backtest_scope[N]; //存储回测所用的时间段
 int total_days = 0; //回测所用总天数
+double Capital[N]; //存储每天仓位的价值
+int Capcnt; //capital 的下标索引
 
 //实现将日期转换为时间戳
 
@@ -148,14 +150,13 @@ void update(string day,position capital)
         for(int j = 0;j < 10;j++) if(temp == poi_bond[j]) ck = 1;
         if(!ck)
         {
-
             capital.val_cash -= bond[i].close;
             capital.val_bond += bond[i].close;
             for(int z = 0;z < 10;z++) if(capital.holding[z].name == "NULL") capital.holding[z] = {bond[i].name,bond[i].code,bond[i].close,bond[i].premium_rate,bond[i].factor};
         }
     }
-
     capital.total_fund = capital.val_cash + capital.val_bond;
+    Capital[Capcnt++] = capital.total_fund;
     write_into(day,capital);
 }
 
@@ -174,6 +175,17 @@ void clc()
     myfile.close(); //关闭文件
 }
 
+//将每日资金写入Capital.csv 文件
+void write_Capital()
+{
+    ofstream outfile("Capital.csv",ios_base::app); // 打开文件,构造输出流对象outf    ile 并绑定文件
+    for(int i = 0;i < total_days;i++)
+    {
+      outfile << Capital[i] << ' ';
+    }
+    outfile.close();
+}
+
 int main()
 {
     //初始化回测时间段
@@ -181,11 +193,11 @@ int main()
 
     //初始化仓位
     position capital;
-    init_poi(capital,1e6,1e6,0);
+    double inicash = 1e6;
+    init_poi(capital,inicash,inicash,0);
 
     clc();
 
     for(int i = 0;i < total_days;i++) update(backtest_scope[i],capital);
     return 0;
 }
-
